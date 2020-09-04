@@ -15,14 +15,9 @@ app.use(express.json());
 // app.use(express.static('public'))
 app.use(logger("dev"));
 
-//   * GET `/notes` - Should return the `notes.html` file.
-app.get("/notes", function (req, res) {
-  res.sendFile(path.join(__dirname + "/public/notes.html"));
-});
-
 // * The following API routes should be created:
 
-//read the `db.json` file and return all saved notes as JSON.
+//read the `db.json` file and return all saved notes
 app.get("/api/notes", function (req, res) {
   fs.readFile(__dirname + "/db/db.json", "utf8", function (err, data) {
     res.json(JSON.parse(data));
@@ -34,22 +29,43 @@ app.post("/api/notes", function (req, res) {
   //assign randomly generated UUID
   note.id = uuidv4();
   // console.log(note);
-  // read all notes and stringify
+  // read all notes
   fs.readFile(__dirname + "/db/db.json", "utf8", function (err, list) {
-    let storedNotes = JSON.parse(list);
+    if (err) throw err;
+    const storedNotes = JSON.parse(list);
     //add new note
     storedNotes.push(note);
     //write new note to file
     const stringNote = JSON.stringify(storedNotes, null, 2);
-    fs.writeFile(__dirname + "/db/db.json", stringNote, function(){
+    fs.writeFile(__dirname + "/db/db.json", stringNote, function () {
       res.json(note);
-    })
+    });
   });
 });
 
 //   * DELETE `/api/notes/:id` - Should receive a query parameter containing the id of a note to delete. This means you'll need to find a way to give each note a unique `id` when it's saved. In order to delete a note, you'll need to read all notes from the `db.json` file, remove the note with the given `id` property, and then rewrite the notes to the `db.json` file.
+app.delete("/api/notes/:id", function (req, res) {
+  //set note ID as paramater for delete request
+  const { id } = req.params;
+  fs.readFile(__dirname + "/db/db.json", "utf8", function (err, list) {
+    if (err) console.log("ERROR");
+    //read all notes
+    let storedNotes = JSON.parse(list);
+    // find selected note based on ID from user input req.params
+    storedNotes = storedNotes.filter((storedNote) => storedNote.id !== id);
+    //collect notes that were NOT deleted and stringify
+    const unselectedNotes = JSON.stringify(storedNotes, null, 2);
+    fs.writeFile(__dirname + "/db/db.json", unselectedNotes, function () {
+      res.json(true);
+    });
+  });
+});
 
-//   * GET `*` - Should return the `index.html` file
+//return the `notes.html` file.
+app.get("/notes", function (req, res) {
+  res.sendFile(path.join(__dirname + "/public/notes.html"));
+});
+//returns the `index.html` file
 app.get("*", function (req, res) {
   res.sendFile(__dirname + "/public/index.html");
 });
