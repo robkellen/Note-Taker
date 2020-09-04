@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 
 let app = express();
-let PORT = 5050;
+const PORT = process.env.PORT || 5050;
 
 
 // Middleware
