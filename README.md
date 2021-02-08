@@ -18,7 +18,7 @@ This application can be used to write, save, and delete notes.
 
 
 ## Installation 
-No installation is required.  To use the application load `https://sleepy-sierra-09403.herokuapp.com/notes` into the browser.
+No installation is required.  To access the deployed application visit: https://sleepy-sierra-09403.herokuapp.com/notes 
 
 ## Usage
 From the homepage click the button "Get Started" and you are directed to the note-taking page.  From here you can click on the "Note Title" text box and type the title of your note.  The user can then tab to the "Note Text" part of the body, or click on the placeholder text to begin entering the text of their note.  When finished writing out the note click the save icon in the top right corner and the note is saved in the column to the left with the title of the note displayed.  If the user closes the webpage and returns later the note will persist until the user clicks on the red trash can icon to delete it.  To write a new note the user can follow the same instructions for the first note, or click on the pencil icon in the top right corner.  Clicking on the "Note Taker" text in the top left corner will return the user to the homepage.  
